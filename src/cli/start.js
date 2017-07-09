@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import util from '../util'
 import chalk from 'chalk'
-
+var nodemon = require('nodemon')
 /**
  * Entry point of botpress
  *
@@ -15,7 +15,7 @@ import chalk from 'chalk'
 module.exports = function(projectPath, options) {
   let Botpress = null
 
-  if (!projectPath || typeof(projectPath) !== 'string') {
+  if (!projectPath || typeof projectPath !== 'string') {
     projectPath = '.'
   }
 
@@ -30,8 +30,10 @@ module.exports = function(projectPath, options) {
     util.print('Hint: 1) have you used `botpress init` to create a new bot the proper way?')
     util.print('Hint: 2) Do you have read and write permissions on the current directory?')
     util.print('-------------')
-    util.print('If none of the above works, this might be a bug in botpress. ' +
-      'Please contact the Botpress Team on gitter and provide the printed error above.')
+    util.print(
+      'If none of the above works, this might be a bug in botpress. ' +
+        'Please contact the Botpress Team on gitter and provide the printed error above.'
+    )
     process.exit(1)
   }
 
@@ -41,6 +43,6 @@ module.exports = function(projectPath, options) {
     process.exit(1)
   }
 
-  const bot = new Botpress({ botfile })
+  const bot = nodemon(new Botpress({ botfile }))
   bot.start()
 }
